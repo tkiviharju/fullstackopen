@@ -4,20 +4,19 @@ import ReactDOM from 'react-dom'
 const Header = ({ course }) =>
     <h1>{course}</h1>
 
-const Content = (props) => {
-    return <>
-        <p>
-        {props.part1} {props.ex1}
-      </p>
-      <p>
-        {props.part2} {props.ex2}
-      </p>
-      <p>
-        {props.part3} {props.ex3}
-      </p>
-    </>
 
-}
+const Part = ({ part, exercises}) =>
+    <p>
+        {part} {exercises}
+    </p>
+
+const Content = (props) => 
+    <div>
+        <Part part={props.part1} exercises={props.ex1}/>
+        <Part part={props.part2} exercises={props.ex2}/>
+        <Part part={props.part3} exercises={props.ex3}/>
+    </div>
+
 
 const Total = ({ total }) =>
     <p>yhteensä {total} tehtävää</p>
@@ -26,7 +25,7 @@ const Total = ({ total }) =>
 const App = () => {
   const course = 'Half Stack -sovelluskehitys'
   const part1 = 'Reactin perusteet'
-  const exercises1 = 14
+  const exercises1 = 11
   const part2 = 'Tiedonvälitys propseilla'
   const exercises2 = 7
   const part3 = 'Komponenttien tila'
