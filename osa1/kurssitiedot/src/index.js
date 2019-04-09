@@ -15,8 +15,12 @@ const Content = ({ parts }) =>
         {parts.map(part => <Part key={part.name} part={part.name} exercises={part.exercises} />)}
     </div>
 
-const Total = ({ total }) =>
-    <p>yhteensä {total} tehtävää</p>
+const Total = ({ parts }) => {
+    const total = parts.reduce((sum, part) => sum += part.exercises, 0);
+    
+    return <p>yhteensä {total} tehtävää</p>
+    
+}
 
 
 const App = () => {
@@ -35,12 +39,11 @@ const App = () => {
           exercises: 14
         }
       ]
-    const total = parts.reduce((sum, part) => sum += part.exercises, 0);
     return (
         <div>
             <Header course={course} />
             <Content parts={parts} />
-            <Total total={total} />
+            <Total parts={parts} />
         </div>
     )
 }
