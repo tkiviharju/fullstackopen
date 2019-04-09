@@ -10,36 +10,39 @@ const Part = ({ part, exercises}) =>
         {part} {exercises}
     </p>
 
-const Content = (props) => 
+const Content = ({ courses }) =>
     <div>
-        <Part part={props.part1} exercises={props.ex1}/>
-        <Part part={props.part2} exercises={props.ex2}/>
-        <Part part={props.part3} exercises={props.ex3}/>
+        {courses.map(course => <Part key={course.name} part={course.name} exercises={course.exercises} />)}
     </div>
-
 
 const Total = ({ total }) =>
     <p>yhteensä {total} tehtävää</p>
 
 
 const App = () => {
-  const course = 'Half Stack -sovelluskehitys'
-  const part1 = 'Reactin perusteet'
-  const exercises1 = 11
-  const part2 = 'Tiedonvälitys propseilla'
-  const exercises2 = 7
-  const part3 = 'Komponenttien tila'
-  const exercises3 = 14
-
-  return (
-    <div>
-        <Header course={course} />
-        <Content part1={part1} part2={part2} part3={part3} 
-            ex1={exercises1} ex2={exercises2} ex3={exercises3}
-        />
-        <Total total={exercises1 + exercises2 + exercises3} />
-    </div>
-  )
+    const course = 'Half Stack -sovelluskehitys'
+    const part1 = {
+      name: 'Reactin perusteet',
+      exercises: 10
+    }
+    const part2 = {
+      name: 'Tiedonvälitys propseilla',
+      exercises: 7
+    }
+    const part3 = {
+      name: 'Komponenttien tila',
+      exercises: 14
+    }
+    const courses = [part1, part2, part3]
+    const total = courses.reduce((sum, course) => sum += course.exercises, 0);
+    return (
+        <div>
+            <Header course={course} />
+            <Content courses={courses}
+            />
+            <Total total={total} />
+        </div>
+    )
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
