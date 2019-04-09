@@ -10,9 +10,9 @@ const Part = ({ part, exercises}) =>
         {part} {exercises}
     </p>
 
-const Content = ({ courses }) =>
+const Content = ({ parts }) =>
     <div>
-        {courses.map(course => <Part key={course.name} part={course.name} exercises={course.exercises} />)}
+        {parts.map(part => <Part key={part.name} part={part.name} exercises={part.exercises} />)}
     </div>
 
 const Total = ({ total }) =>
@@ -21,25 +21,25 @@ const Total = ({ total }) =>
 
 const App = () => {
     const course = 'Half Stack -sovelluskehitys'
-    const part1 = {
-      name: 'Reactin perusteet',
-      exercises: 10
-    }
-    const part2 = {
-      name: 'Tiedonvälitys propseilla',
-      exercises: 7
-    }
-    const part3 = {
-      name: 'Komponenttien tila',
-      exercises: 14
-    }
-    const courses = [part1, part2, part3]
-    const total = courses.reduce((sum, course) => sum += course.exercises, 0);
+    const parts = [
+        {
+          name: 'Reactin perusteet',
+          exercises: 10
+        },
+        {
+          name: 'Tiedonvälitys propseilla',
+          exercises: 7
+        },
+        {
+          name: 'Komponenttien tila',
+          exercises: 14
+        }
+      ]
+    const total = parts.reduce((sum, part) => sum += part.exercises, 0);
     return (
         <div>
             <Header course={course} />
-            <Content courses={courses}
-            />
+            <Content parts={parts} />
             <Total total={total} />
         </div>
     )
