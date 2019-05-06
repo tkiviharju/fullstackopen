@@ -5,6 +5,22 @@ const Button = ({ clickHandler, text }) =>
 	<button name={text} onClick={clickHandler}>{text}</button>
 
 
+const Statistics = ({ good, neutral, bad }) => {
+	const total = good + neutral + bad;
+	const mean = (good * 1 + bad * -1) / total;
+	const positiveNumbers = parseFloat(good * 100 / total).toFixed(0);
+	return (
+		<div>
+			<div>hyvä: {good}</div>
+			<div>neutraali: {neutral}</div>
+			<div>huono: {bad}</div>
+			<div>yhteensä: {total}</div>
+			<div>keskiarvo: {mean ? mean : 0}</div>
+			<div>positiiviset: {isNaN(positiveNumbers) ? '0' :`${positiveNumbers} %`}</div>
+		</div>
+	)
+}
+
 const App = () => {
 	const [ good, setGood ] = useState(0);
 	const [ neutral, setNeutral ] = useState(0);
@@ -12,7 +28,6 @@ const App = () => {
 
 
 const handleClick = (event) => {
-	console.log(event.target.name)
 	switch (event.target.name){
 		case ('hyvä'):
 			setGood(good + 1);
@@ -36,11 +51,7 @@ const handleClick = (event) => {
 				<Button clickHandler={handleClick} text='huono'></Button>
 			</div>
 			<h2>statistiikka</h2>
-			<div>
-				<div>hyvä: {good}</div>
-				<div>neutraali: {neutral}</div>
-				<div>huono: {bad}</div>
-			</div>
+			<Statistics good={good} neutral={neutral} bad={bad} />
 		</div>
 	)
 }
