@@ -4,20 +4,22 @@ import ReactDOM from 'react-dom';
 const Button = ({ clickHandler, text }) =>
 	<button name={text} onClick={clickHandler}>{text}</button>;
 
+const Statistic = ({ text, value }) => <tr><td>{text}</td><td  style={{paddingLeft: '10px'}}>{value}</td></tr>;
 
 const Statistics = ({ good, neutral, bad }) => {
 	const total = good + neutral + bad;
 	const mean = (good * 1 + bad * -1) / total;
-	const positiveNumbers = parseFloat(good * 100 / total).toFixed(0);
+	const positiveNumbers = `${parseFloat(good * 100 / total).toFixed(0)} %`;
 	return total ? (
-			<div>
-				<div>hyvä: {good}</div>
-				<div>neutraali: {neutral}</div>
-				<div>huono: {bad}</div>
-				<div>yhteensä: {total}</div>
-				<div>keskiarvo: {mean ? mean : 0}</div>
-				<div>positiiviset: {isNaN(positiveNumbers) ? '0' :`${positiveNumbers} %`}</div>
-			</div>
+			<table>
+				<tbody>
+					<Statistic text='hyvä' value={good}/>
+					<Statistic text='neutraali' value={neutral}/>
+					<Statistic text='huono' value={bad}/>
+					<Statistic text='keskiarvo' value={mean}/>
+					<Statistic text='positiiviset' value={positiveNumbers}/>
+				</tbody>
+			</table>
 		) : (
 			<div>Ei yhtään palautetta annettu</div>
 		);
