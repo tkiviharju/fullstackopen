@@ -1,24 +1,26 @@
-import React, { useState } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 
 const Button = ({ clickHandler, text }) =>
-	<button name={text} onClick={clickHandler}>{text}</button>
+	<button name={text} onClick={clickHandler}>{text}</button>;
 
 
 const Statistics = ({ good, neutral, bad }) => {
 	const total = good + neutral + bad;
 	const mean = (good * 1 + bad * -1) / total;
 	const positiveNumbers = parseFloat(good * 100 / total).toFixed(0);
-	return (
-		<div>
-			<div>hyvä: {good}</div>
-			<div>neutraali: {neutral}</div>
-			<div>huono: {bad}</div>
-			<div>yhteensä: {total}</div>
-			<div>keskiarvo: {mean ? mean : 0}</div>
-			<div>positiiviset: {isNaN(positiveNumbers) ? '0' :`${positiveNumbers} %`}</div>
-		</div>
-	)
+	return total ? (
+			<div>
+				<div>hyvä: {good}</div>
+				<div>neutraali: {neutral}</div>
+				<div>huono: {bad}</div>
+				<div>yhteensä: {total}</div>
+				<div>keskiarvo: {mean ? mean : 0}</div>
+				<div>positiiviset: {isNaN(positiveNumbers) ? '0' :`${positiveNumbers} %`}</div>
+			</div>
+		) : (
+			<div>Ei yhtään palautetta annettu</div>
+		);
 }
 
 const App = () => {
@@ -53,7 +55,7 @@ const handleClick = (event) => {
 			<h2>statistiikka</h2>
 			<Statistics good={good} neutral={neutral} bad={bad} />
 		</div>
-	)
+	);
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById('root'));
