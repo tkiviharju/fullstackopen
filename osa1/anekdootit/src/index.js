@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 const App = ({ anecdotes }) => {
+	const initialPoints = Array(anecdotes.length).fill(0);
 	const [ selected, setSelected ] = useState(0)
-	const [ points, setPoints ] = useState([0,0,0,0,0,0])
+	const [ points, setPoints ] = useState(initialPoints)
 
 	const handleNextClick = () => {
 		const getRandom = () => Math.floor(Math.random() * Math.floor(anecdotes.length));
