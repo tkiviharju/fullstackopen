@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 const App = ({ anecdotes }) => {
-	const [selected, setSelected] = useState(0)
+	const [ selected, setSelected ] = useState(0)
+	const [ points, setPoints ] = useState([0,0,0,0,0,0])
 
-	const handleClick = () => {
+	const handleNextClick = () => {
 		const getRandom = () => Math.floor(Math.random() * Math.floor(anecdotes.length));
 		let randomAnecdote = getRandom();
 		while (randomAnecdote === selected){
@@ -12,10 +13,22 @@ const App = ({ anecdotes }) => {
 		}
 		setSelected(randomAnecdote);
 	}
+
+	const handleVoteClick = () => {
+		const copy = [ ...points ];
+		copy[selected] += 1;
+		setPoints(copy);
+	}
 	return(
 		<div>
 			{anecdotes[selected]}
-			<div style={{margin: '10px 0 '}}><button onClick={handleClick}>Next anecdote</button></div>
+			<div>has {points[selected]} votes</div>
+			<div style={{margin: '10px 0 '}}>
+				<div>
+					<button onClick={handleVoteClick}>Vote</button>
+					<button onClick={handleNextClick}>Next anecdote</button>
+				</div>
+			</div>
 		</div>
 	);
 }
