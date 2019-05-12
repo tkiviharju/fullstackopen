@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const App = ({ anecdotes }) => {
-	const initialPoints = Array(anecdotes.length).fill(0);
-	const [ selected, setSelected ] = useState(0)
-	const [ points, setPoints ] = useState(initialPoints)
+const App = (props) => {
+	const initialAnecdotes = props.anecdotes.map(anecdote => { return { points: 0, anecdote } });
+
+	const [ anecdotes, setAnecdotes ] = useState(initialAnecdotes);
+	const [ selected, setSelected ] = useState(0);
 
 	const handleNextClick = () => {
 		const getRandom = () => Math.floor(Math.random() * Math.floor(anecdotes.length));
@@ -16,20 +17,45 @@ const App = ({ anecdotes }) => {
 	}
 
 	const handleVoteClick = () => {
-		const copy = [ ...points ];
-		copy[selected] += 1;
-		setPoints(copy);
+		const deepCopy = JSON.parse(JSON.stringify(anecdotes));
+		deepCopy[selected].points += 1;
+		setAnecdotes(deepCopy);
 	}
+
+	const findMostVoted = () => {
+		let mostVoted = { anecdote: false, points: 0}
+		anecdotes.forEach(anecdote => {
+			if (anecdote.points > mostVoted.points) {
+				mostVoted = anecdote;
+			}
+		});
+		return mostVoted;
+	}
+	const { anecdote, points } = findMostVoted();
 	return(
 		<div>
-			{anecdotes[selected]}
-			<div>has {points[selected]} votes</div>
-			<div style={{margin: '10px 0 '}}>
-				<div>
-					<button onClick={handleVoteClick}>Vote</button>
-					<button onClick={handleNextClick}>Next anecdote</button>
+			<div>
+				<h2>Anecdote of the day</h2>
+				{anecdotes[selected].anecdote}
+				<div>has {anecdotes[selected].points} votes</div>
+				<div style={{margin: '10px 0 '}}>
+					<div>
+						<button onClick={handleVoteClick}>Vote</button>
+						<button onClick={handleNextClick}>Next anecdote</button>
+					</div>
 				</div>
 			</div>
+
+			{findMostVoted().anecdote && <div>
+				<h2>Anecdote with the most votes</h2>
+				<div>
+					{anecdote}
+				</div>
+				<div>
+					has {points} votes
+				</div>
+			</div>
+			}
 		</div>
 	);
 }
