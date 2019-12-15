@@ -10,6 +10,10 @@ const App = () => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
+		const personsContainName = persons.map(person => person.name.toLowerCase()).includes(newName.toLowerCase());
+		if (personsContainName){
+			return alert(`${newName} is already added to phonebook`);
+		}
 		if (newName){
 			setPersons(persons.concat({name: newName}));
 			setNewName('');
