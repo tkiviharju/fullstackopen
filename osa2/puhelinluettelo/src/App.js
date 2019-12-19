@@ -17,6 +17,7 @@ const App = () => {
 			.then(result => setPersons(result.data));
 	}, []);
 
+
 	const handleChange = (event) => event.target.name === 'name' ? setNewName(event.target.value) : setNewNumber(event.target.value);
 
 	const handleFilterChange = (event) => setFilter(event.target.value); 
@@ -28,9 +29,15 @@ const App = () => {
 			return alert(`${newName} is already added to phonebook`);
 		}
 		if (newName && newNumber){
-			setPersons(persons.concat({name: newName, number: newNumber}));
-			setNewName('');
-			setNewNumber('');
+			const newPerson = {name: newName, number: newNumber}
+			axios
+				.post('http://localhost:3001/persons', newPerson)
+				.then(response => {
+					setPersons(persons.concat(response.data));
+					setNewName('');
+					setNewNumber('');
+				})
+				.catch(err => console.log(err));
 		}
 
 	}
