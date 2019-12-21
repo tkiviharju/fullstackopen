@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import personService from './services/persons';
+import Notification from './Notification.jsx';
 import Filter from './Filter.jsx';
 import PersonList from './PersonList.jsx';
 import Form from './Form';
@@ -11,6 +12,8 @@ const App = () => {
 	const [ newName, setNewName ] = useState('');
 	const [ newNumber, setNewNumber ] = useState('');
 	const [ filter, setFilter ] = useState('');
+	const [ notification, setNotification ] = useState('');
+	const [ error, setError ] = useState(false);
 
 	useEffect(() => {
 		personService
@@ -18,6 +21,15 @@ const App = () => {
 			.then(result => setPersons(result.data));
 	}, []);
 
+
+	const handleNotification = (text, _error = false) => {
+		setNotification(text);
+		_error && setError(true);
+		setTimeout(() => {
+			setNotification('');
+			_error && setError(false);
+		}, 5000)
+	}
 
 	const handleChange = (event) => event.target.name === 'name' ? setNewName(event.target.value) : setNewNumber(event.target.value);
 
@@ -37,6 +49,7 @@ const App = () => {
 			personService
 				.update(updatedPerson, id)
 				.then(response => {
+					handleNotification(`Updated ${newName}`);
 					const newPersons = persons
 						.filter(person => person.name.toLowerCase() !== newName.toLowerCase())
 						.concat(response.data);
@@ -48,10 +61,11 @@ const App = () => {
 			personService
 				.create(newPerson)
 				.then(response => {
+					handleNotification(`Added ${newName}`);
 					setPersons(persons.concat(response.data));
 					resetInputs();
 				})
-				.catch(err => console.log(err));
+				.catch(err => handleNotification(err, true));
 		}
 	}
 
@@ -62,15 +76,17 @@ const App = () => {
 			personService
 				.deletePerson(id)
 				.then(() => {
+					handleNotification(`Deleted ${personToDelete.name}`);
 					const newPersons = persons.filter(person => person.id !== id);
 					setPersons(newPersons);
 				})
-				.catch(err => console.log(err));
+				.catch(err => handleNotification(err, true));
 		}
 	}
 
 	return (
 		<div>
+			{notification && <Notification notification={notification} error={error}/>}
 			<h1>Phonebook</h1>
 
 			<Filter filter={filter} handleFilterChange={handleFilterChange} />
