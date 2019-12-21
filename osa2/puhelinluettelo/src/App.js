@@ -23,24 +23,36 @@ const App = () => {
 
 	const handleFilterChange = (event) => setFilter(event.target.value); 
 
+	const resetInputs = () => {
+		setNewNumber('');
+		setNewName('');
+	}
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		const personsContainName = persons.map(person => person.name.toLowerCase()).includes(newName.toLowerCase());
-		if (personsContainName){
-			return alert(`${newName} is already added to phonebook`);
-		}
-		if (newName && newNumber){
+		const personWithSameName = persons.find(person => person.name.toLowerCase() === newName.toLowerCase());
+		if (personWithSameName && newNumber && window.confirm(`${newName} is already added to phonebooke, replace the old number with a new one?`)){
+			const updatedPerson = {name: newName, number: newNumber}
+			const { id } = personWithSameName;
+			personService
+				.update(updatedPerson, id)
+				.then(response => {
+					const newPersons = persons
+						.filter(person => person.name.toLowerCase() !== newName.toLowerCase())
+						.concat(response.data);
+					setPersons(newPersons);
+					resetInputs();
+				});
+		} else if (newName && newNumber){
 			const newPerson = {name: newName, number: newNumber}
 			personService
 				.create(newPerson)
 				.then(response => {
 					setPersons(persons.concat(response.data));
-					setNewName('');
-					setNewNumber('');
+					resetInputs();
 				})
 				.catch(err => console.log(err));
 		}
-
 	}
 
 	const handleDelete = (event) => {
