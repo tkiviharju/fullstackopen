@@ -23,6 +23,8 @@ const App = () => {
 
 
 	const handleNotification = (text, _error = false) => {
+		console.log('errorrrr', text)
+		console.log(typeof text)
 		setNotification(text);
 		_error && setError(true);
 		setTimeout(() => {
@@ -55,7 +57,8 @@ const App = () => {
 						.concat(response.data);
 					setPersons(newPersons);
 					resetInputs();
-				});
+				})
+				.catch(() => handleNotification(`Failed to update ${newName}'s information to phonebook`, true))
 		} else if (newName && newNumber){
 			const newPerson = {name: newName, number: newNumber}
 			personService
@@ -65,7 +68,7 @@ const App = () => {
 					setPersons(persons.concat(response.data));
 					resetInputs();
 				})
-				.catch(err => handleNotification(err, true));
+				.catch(() => handleNotification(`Failed to add ${newName} to phonebook`, true))
 		}
 	}
 
@@ -80,9 +83,9 @@ const App = () => {
 					const newPersons = persons.filter(person => person.id !== id);
 					setPersons(newPersons);
 				})
-				.catch(err => handleNotification(err, true));
+				.catch(() => handleNotification(`Information of ${personToDelete.name} has already been removed from server`, true));
+			}
 		}
-	}
 
 	return (
 		<div>
