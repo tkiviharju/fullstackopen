@@ -3,7 +3,7 @@ import React from 'react';
 const Filter = ({ filter, handleFilterChange}) => (
 	<p>
 		filter shown with
-		<input value={filter} onChange={handleFilterChange}/>
+		<input className='input filter' value={filter} onChange={handleFilterChange}/>
 	</p>
 );
 

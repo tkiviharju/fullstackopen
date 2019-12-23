@@ -42,3 +42,16 @@ input, textarea, select, button {
 .error {
 	background-color: #9a0b00 !important;
 }
+
+.input-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.input {
+	margin: 5px 0;
+}
+
+.filter {
+	margin-left: 10px;
+}
