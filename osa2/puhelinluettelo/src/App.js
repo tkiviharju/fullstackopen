@@ -21,7 +21,6 @@ const App = () => {
 			.then(result => setPersons(result.data));
 	}, []);
 
-
 	const handleNotification = (text, _error = false) => {
 		console.log('errorrrr', text)
 		console.log(typeof text)
@@ -73,7 +72,7 @@ const App = () => {
 	}
 
 	const handleDelete = (event) => {
-		const id = parseInt(event.target.name);
+		const id = event.target.name;
 		const personToDelete = persons.find(person => person.id === id);
 		if (window.confirm(`Delete ${personToDelete.name}?`)){
 			personService

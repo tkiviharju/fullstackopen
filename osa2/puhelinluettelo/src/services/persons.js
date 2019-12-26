@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const url = '/api/persons';
+const url = process.env.NODE_ENV === 'development' ? 
+	'http://localhost:3001/api/persons' : '/api/persons';
 
 const getAll = () => axios.get(url);
 
