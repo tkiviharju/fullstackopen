@@ -22,8 +22,6 @@ const App = () => {
 	}, []);
 
 	const handleNotification = (text, _error = false) => {
-		console.log('errorrrr', text)
-		console.log(typeof text)
 		setNotification(text);
 		_error && setError(true);
 		setTimeout(() => {
@@ -67,7 +65,7 @@ const App = () => {
 					setPersons(persons.concat(response.data));
 					resetInputs();
 				})
-				.catch(() => handleNotification(`Failed to add ${newName} to phonebook`, true))
+				.catch((error) => handleNotification(error.response.data.error, true))
 		}
 	}
 
